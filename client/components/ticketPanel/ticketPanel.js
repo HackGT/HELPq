@@ -74,6 +74,14 @@ Template.ticketPanel.helpers({
     }
 
     return moment(ticket.expiresAt).from(ReactiveNow.get());
+  },
+  canCreateMoreTickets: function(){
+    return CONSTANTS.ALLOW_MULTIPLE_TICKETS || (Tickets.findOne({
+        userId: Meteor.userId(),
+        status: {
+            $in: ["OPEN", "CLAIMED"]
+        }
+    }) === null);
   }
 });
 
