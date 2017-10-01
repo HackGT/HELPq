@@ -2,6 +2,59 @@
   <div class="ticketPanel">
       {{#if queueEnabled}}
 
+        {{#if canCreateMoreTickets}}
+        <div class="ui segment">
+          <div class="title">
+            <p>
+              <strong>
+                {{greeting}}
+              </strong>
+            </p>
+            {{constant 'TICKET_PANEL_GREETING'}}
+          </div>
+          <div class="content">
+            {{constant 'TICKET_PANEL_TOPIC'}}
+            <br>
+            <input id="topic"
+                   type="text"
+                   name="topic"
+                   class="clean"
+                   placeholder="{{constant 'TICKET_PANEL_TOPIC_PLACEHOLDER'}}">
+            <br>
+            {{constant 'TICKET_PANEL_LOCATION'}}
+            <br>
+            <input id="location"
+                   type="text"
+                   name="location"
+                   class="clean"
+                   placeholder="{{constant 'TICKET_PANEL_LOCATION_PLACEHOLDER'}}">
+            <br>
+            {{constant 'TICKET_PANEL_CONTACT'}}
+            <br>
+            <input id="contact"
+                   type="text"
+                   name="contact"
+                   class="clean"
+                   placeholder="{{constant 'TICKET_PANEL_CONTACT_PLACEHOLDER'}}">
+
+            {{#if isEqual -1 getExpirationDelay}}
+            <br>
+            {{constant 'TICKET_PANEL_EXPIRATION'}}
+            <br>
+            <input id="expirationDelay"
+                   type="number"
+                   name="expirationDelay"
+                   class="clean"
+                   placeholder="{{constant 'TICKET_PANEL_EXPIRATION_PLACEHOLDER'}}">
+            {{/if}}
+          </div>
+          <br>
+          <button id="submit" class="primary push disabled fluid button">
+            {{constant 'TICKET_PANEL_HELP'}}
+          </button>
+        </div>
+        {{/if}}
+
         {{#each currentTickets}}
           <div class="ui segment">
 
@@ -41,59 +94,6 @@
           </button>
           </div>
         {{/each}}
-
-        {{#if canCreateMoreTickets}}
-          <div class="ui segment">
-            <div class="title">
-              <p>
-                <strong>
-                  {{greeting}}
-                </strong>
-              </p>
-              {{constant 'TICKET_PANEL_GREETING'}}
-            </div>
-            <div class="content">
-              {{constant 'TICKET_PANEL_TOPIC'}}
-              <br>
-              <input id="topic"
-                     type="text"
-                     name="topic"
-                     class="clean"
-                     placeholder="{{constant 'TICKET_PANEL_TOPIC_PLACEHOLDER'}}">
-              <br>
-              {{constant 'TICKET_PANEL_LOCATION'}}
-              <br>
-              <input id="location"
-                     type="text"
-                     name="location"
-                     class="clean"
-                     placeholder="{{constant 'TICKET_PANEL_LOCATION_PLACEHOLDER'}}">
-              <br>
-              {{constant 'TICKET_PANEL_CONTACT'}}
-              <br>
-              <input id="contact"
-                     type="text"
-                     name="contact"
-                     class="clean"
-                     placeholder="{{constant 'TICKET_PANEL_CONTACT_PLACEHOLDER'}}">
-
-              {{#if isEqual -1 getExpirationDelay}}
-                <br>
-                {{constant 'TICKET_PANEL_EXPIRATION'}}
-                <br>
-                <input id="expirationDelay"
-                       type="number"
-                       name="expirationDelay"
-                       class="clean"
-                       placeholder="{{constant 'TICKET_PANEL_EXPIRATION_PLACEHOLDER'}}">
-              {{/if}}
-            </div>
-            <br>
-            <button id="submit" class="primary push disabled fluid button">
-              {{constant 'TICKET_PANEL_HELP'}}
-            </button>
-          </div>
-        {{/if}}
 
       {{else}}
          {{constant 'TICKET_PANEL_DISABLED_MSG'}}
