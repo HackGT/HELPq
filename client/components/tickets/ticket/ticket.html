@@ -53,8 +53,9 @@
           </div>
         {{else}}
 
-          {{#if hasClaimedTicket}}
-            <button class="disabled primary fluid push button claim">Claim Ticket</button>
+          {{#if ticketHasUser currentUser}}
+            <button class="fluid success push button complete">Mark as Complete</button>
+            <button class="fluid danger push button reopen">Leave Ticket</button>
           {{else}}
             <button class="primary fluid push button claim">Claim Ticket</button>
           {{/if}}
@@ -63,16 +64,24 @@
 
       {{/if}}
 
-      {{#if statusIs "CLAIMED"}}
-        {{#if claimer}}
-          <button class="fluid success push button complete">Mark as Complete</button>
-          <button class="fluid primary push button reopen">Reopen Ticket</button>
-        {{else}}
-          <div class="right floated author">
-            Claimed by {{claimName}}
-          </div>
-        {{/if}}
+
+      {{#if claimants}}
+        <div class="right floated author">
+        Claimed by
+        {{#each claimants}}
+          {{getName this}}
+        {{/each}}
+        </div>
       {{/if}}
+      <!--{{#if statusIs "CLAIMED"}}-->
+        <!--{{#if claimer}}-->
+          <!---->
+        <!--{{else}}-->
+          <!--<div class="right floated author">-->
+            <!--Claimed by {{claimName}}-->
+          <!--</div>-->
+        <!--{{/if}}-->
+      <!--{{/if}}-->
 
     </div>
 

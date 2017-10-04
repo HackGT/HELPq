@@ -49,6 +49,15 @@ Template.ticket.helpers({
   },
   getColor: function(percent){
     return 'hsl(' + (1 - percent) * 120 + ', 75%, 50%)'
+  },
+  ticketHasUser: function(userId){
+    return this.claimants.indexOf(userId) !== -1;
+  },
+  currentUser: function() {
+    return Meteor.userId();
+  },
+  getName: function(id) {
+    return Meteor.users.findOne(id).profile.name
   }
 });
 

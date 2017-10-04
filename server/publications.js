@@ -33,17 +33,25 @@ function getUserData(){
 
 // Get all users
 function getAllUsers(){
-  if (authorized.admin(this.userId)) {
-    return Meteor.users.find({},
-        {
-          fields: {
+  // if (authorized.admin(this.userId)) {
+  //   return Meteor.users.find({},
+  //       {
+  //         fields: {
+  //           'createdAt': 1,
+  //           'username': 1,
+  //           'services': 1,
+  //           'profile': 1
+  //         }
+  //       });
+  // }
+  return Meteor.users.find({}, {
+        fields: {
             'createdAt': 1,
             'username': 1,
             'services': 1,
             'profile': 1
-          }
-        });
-  }
+        }
+  });
 }
 
 // Mentors are able to see each other.

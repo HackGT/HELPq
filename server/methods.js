@@ -60,7 +60,8 @@ function createTicket(topic, location, contact, expirationInMinutes) {
       timestamp: Date.now(),
       status: "OPEN",
       expiresAt: expiresAt,
-      rating: null
+      rating: null,
+      claimants: []
     });
 
     _log("Ticket Created by " + this.userId);
@@ -71,32 +72,20 @@ function claimTicket(id){
 
   // You can't complete your own ticket!
   var ticket = Tickets.findOne({_id: id});
-  if (ticket.userId == this.userId) return;
+  if (ticket.claimants.indexOf(this.userId) !== -1) return;
 
   // Mentor Only
   if (authorized.mentor(this.userId)){
-    var user = _getUser(this.userId);
-    // Mentors can only claim one ticket at a time.
-    var currentClaim = Tickets.find({
-      status: "CLAIMED",
-      claimId: this.userId
-    }).fetch();
 
-    if (currentClaim.length === 0){
       Tickets.update({
-        _id: id
+          _id: id
       },{
-        $set: {
-          status: "CLAIMED",
-          claimId: user._id,
-          claimName: _getUserName(user),
-          claimTime: Date.now()
+        $addToSet: {
+          claimants: this.userId
         }
       });
-
-      _log("Ticket Claimed by " + this.userId);
       return true;
-    }
+
   }
   return false;
 }
@@ -104,20 +93,17 @@ function claimTicket(id){
 function completeTicket(id){
   // You can't complete your own ticket!
   var ticket = Tickets.findOne({_id: id});
-  if (ticket.userId == this.userId) return;
+  if (ticket.claimants.indexOf(this.userId) === -1) return;
 
   // Mentor only
   if (authorized.mentor(this.userId)){
-    var user = _getUser(this.userId);
     Tickets.update({
       _id: id
     },{
-      $set: {
-        status: "COMPLETE",
-        claimId: user._id,
-        claimName: _getUserName(user),
-        completeTime: Date.now()
-      }
+        $set: {
+          status: "COMPLETE",
+          completeTime: Date.now()
+        }
     });
 
     _log("Ticket Completed by " + this.userId);
@@ -132,12 +118,9 @@ function reopenTicket(id){
     Tickets.update({
       _id: id
     },{
-      $set: {
-        status: 'OPEN',
-        // expiresAt: _settings().expirationDelay > 0 ? Date.now() + _settings().expirationDelay : Infinity,
-        claimId: null,
-        claimName: null
-      }
+        $pull: {
+          claimants: this.userId
+        }
     });
     _log("Ticket Reopened: " + id);
     return true;
