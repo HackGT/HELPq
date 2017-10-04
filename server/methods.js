@@ -34,8 +34,12 @@ function createTicket(topic, location, contact, expirationInMinutes) {
           }
         }).fetch();
 
-    // You can't have more than one active ticket!
-    if (userActiveTickets.length > 0) return;
+    if (!CONSTANTS.ALLOW_MULTIPLE_TICKETS) {
+        // You can't have more than one active ticket!
+        if (userActiveTickets.length > 0) return;
+    }
+
+
 
     var user = _getUser(this.userId);
 

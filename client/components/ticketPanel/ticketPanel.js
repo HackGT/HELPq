@@ -12,6 +12,14 @@ Template.ticketPanel.helpers({
       }
     })
   },
+  currentTickets: function(){
+      return Tickets.find({
+          userId: Meteor.userId(),
+          status: {
+              $in: ["OPEN", "CLAIMED"]
+          }
+      })
+  },
   statusIs: function(status){
     return this.status === status;
   },
@@ -66,6 +74,14 @@ Template.ticketPanel.helpers({
     }
 
     return moment(ticket.expiresAt).from(ReactiveNow.get());
+  },
+  canCreateMoreTickets: function(){
+    return CONSTANTS.ALLOW_MULTIPLE_TICKETS || (Tickets.findOne({
+        userId: Meteor.userId(),
+        status: {
+            $in: ["OPEN", "CLAIMED"]
+        }
+    }) === null);
   }
 });
 
@@ -120,10 +136,18 @@ function getTicket(){
   }
 }
 
+function clearTicket(){
+    $('#topic').val("");
+    $('#location').val("");
+    $('#contact').val("");
+    $('#expirationDelay').val("");
+}
+
 function createTicket(){
   if (isValid()){
     var ticket = getTicket();
     Meteor.call('createTicket', ticket.topic, ticket.location, ticket.contact, ticket.expirationDelay);
+    clearTicket();
   }
 }
 
