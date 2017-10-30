@@ -49,13 +49,8 @@ function createAdmin(username, password) {
     username: username
   });
 
-<<<<<<< HEAD
-  if (!user) {
-    Accounts.createUser({
-=======
   if (!user){
     user = Accounts.createUser({
->>>>>>> 40bd0cea75017f56139128e3207cbea9200b7dd5
       username: username,
       password: password,
       profile: {
